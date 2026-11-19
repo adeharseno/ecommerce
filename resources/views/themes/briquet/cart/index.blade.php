@@ -68,22 +68,28 @@
                                 {{-- Quantity form --}}
                                 <form method="POST"
                                       action="{{ route('cart.update', $item['id']) }}"
-                                      class="flex items-center border border-stone-200 rounded-full overflow-hidden">
+                                      class="flex items-center border border-stone-200 rounded-full overflow-hidden bg-white">
                                     @csrf
                                     @method('PATCH')
-                                    <button type="submit" name="quantity"
-                                            value="{{ max(1, $item['quantity'] - 1) }}"
-                                            class="w-9 h-9 flex items-center justify-center text-stone-500
-                                                   hover:bg-stone-100 transition-colors text-base font-bold">
+                                    <button type="button"
+                                            onclick="decrementQty(this)"
+                                            class="w-9 h-9 flex items-center justify-center text-stone-500 hover:bg-stone-100 transition-colors text-base font-bold cursor-pointer select-none"
+                                            aria-label="Kurangi jumlah">
                                         −
                                     </button>
-                                    <span class="w-10 text-center text-sm font-semibold text-stone-800 select-none">
-                                        {{ $item['quantity'] }}
-                                    </span>
-                                    <button type="submit" name="quantity"
-                                            value="{{ $item['quantity'] + 1 }}"
-                                            class="w-9 h-9 flex items-center justify-center text-stone-500
-                                                   hover:bg-stone-100 transition-colors text-base font-bold">
+                                    <input type="number"
+                                           name="quantity"
+                                           value="{{ $item['quantity'] }}"
+                                           min="1"
+                                           max="9999"
+                                           class="w-12 sm:w-14 text-center text-sm font-semibold text-stone-800 bg-transparent py-1 focus:outline-none focus:bg-stone-50 transition-colors [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                                           onchange="updateCartQty(this)"
+                                           onkeydown="if(event.key==='Enter'){event.preventDefault();this.blur();}"
+                                           aria-label="Jumlah produk {{ $item['name'] }}">
+                                    <button type="button"
+                                            onclick="incrementQty(this)"
+                                            class="w-9 h-9 flex items-center justify-center text-stone-500 hover:bg-stone-100 transition-colors text-base font-bold cursor-pointer select-none"
+                                            aria-label="Tambah jumlah">
                                         +
                                     </button>
                                 </form>
@@ -100,7 +106,7 @@
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit"
-                                                class="text-stone-300 hover:text-red-500 transition-colors"
+                                                class="text-stone-300 hover:text-red-500 transition-colors cursor-pointer"
                                                 aria-label="Hapus {{ $item['name'] }}">
                                             <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24"
                                                  stroke-width="1.5" stroke="currentColor">
@@ -162,5 +168,36 @@
     @endif
 
 </div>
+
+@pushOnce('scripts')
+<script>
+    function decrementQty(btn) {
+        const form = btn.closest('form');
+        const input = form.querySelector('input[name="quantity"]');
+        let currentVal = parseInt(input.value, 10) || 1;
+        if (currentVal > 1) {
+            input.value = currentVal - 1;
+            form.submit();
+        }
+    }
+
+    function incrementQty(btn) {
+        const form = btn.closest('form');
+        const input = form.querySelector('input[name="quantity"]');
+        let currentVal = parseInt(input.value, 10) || 0;
+        input.value = currentVal + 1;
+        form.submit();
+    }
+
+    function updateCartQty(input) {
+        let val = parseInt(input.value, 10);
+        if (isNaN(val) || val < 1) {
+            val = 1;
+            input.value = 1;
+        }
+        input.closest('form').submit();
+    }
+</script>
+@endPushOnce
 
 @endsection

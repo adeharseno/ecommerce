@@ -46,7 +46,7 @@ class CartController extends Controller
 
     public function update(Request $request, int $productId): RedirectResponse
     {
-        $qty = (int) $request->input('quantity', 1);
+        $qty = max(1, (int) $request->input('quantity', 1));
 
         $this->cart->updateQuantity($productId, $qty);
 

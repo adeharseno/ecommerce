@@ -41,7 +41,8 @@
                         <a href="{{ route('page.show', 'about') }}" class="text-stone-700 hover:text-amber-800 transition-colors underline underline-offset-4">Tentang Kami</a>
                         <a href="{{ route('page.show', 'qna') }}" class="text-stone-700 hover:text-amber-800 transition-colors underline underline-offset-4">FAQ / Pertanyaan Umum</a>
                         <a href="{{ route('page.show', 'kebijakan-privasi') }}" class="text-stone-700 hover:text-amber-800 transition-colors underline underline-offset-4">Kebijakan Privasi</a>
-                        <a href="{{ route('page.show', 'term-and-condition') }}" class="text-stone-700 hover:text-amber-800 transition-colors underline underline-offset-4">Syarat & Ketentuan</a>
+                        <a href="{{ route('page.show', 'term-and-condition') }}" class="text-stone-700 hover:text-amber-800 transition-colors underline underline-offset-4">Syarat &amp; Ketentuan</a>
+                        <a href="{{ route('page.show', 'return-policy') }}" class="text-stone-700 hover:text-amber-800 transition-colors underline underline-offset-4">Kebijakan Pengembalian</a>
                     </div>
                 </div>
                 <div class="flex items-center gap-3 shrink-0">

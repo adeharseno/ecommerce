@@ -242,6 +242,64 @@ HTML;
 </p>
 HTML;
 
+        $returnContent = <<<'HTML'
+<div class="highlight-box">
+    Kepuasan dan kenyamanan berbelanja Anda adalah komitmen utama <strong>Sumatra Briks</strong> (dioperasikan oleh <strong>AKRATAMA SADAWIRA GRUP</strong>). Kami menjamin mutu setiap briket arang batok kelapa yang kami kirimkan. Halaman ini memuat panduan lengkap mengenai kebijakan pengembalian barang (<em>return</em>) dan pengembalian dana (<em>refund</em>).
+</div>
+
+<h2>1. Syarat Kelayakan Pengembalian Produk</h2>
+<p>
+    Pengajuan retur atau penggantian produk dapat diproses apabila memenuhi salah satu kriteria berikut:
+</p>
+<ul>
+    <li><strong>Produk Rusak Saat Pengiriman:</strong> Kemasan box hancur parah atau briket di dalamnya pecah berkeping-keping akibat kelalaian penanganan kurir ekspedisi logistik.</li>
+    <li><strong>Salah Kirim Varian / Dimensi:</strong> Produk yang diterima tidak cocok dengan invoice pemesanan (misalnya: Anda memesan Cube C25, namun menerima Cube C28 atau Pillow).</li>
+    <li><strong>Kekurangan Kuantitas:</strong> Jumlah box atau berat bersih pesanan yang diterima kurang dari rincian pada invoice pembelian.</li>
+    <li><strong>Cacat Kualitas Produksi:</strong> Briket terbukti memiliki kadar air berlebih atau tidak dapat menyala stabil sesuai standar spesifikasi mutu resmi kami.</li>
+</ul>
+
+<h2>2. Ketentuan Wajib Klaim (Video Unboxing)</h2>
+<p>
+    Untuk mempercepat proses investigasi dan klaim kompensasi, mohon perhatikan ketentuan berikut:
+</p>
+<ul>
+    <li><strong>Video Unboxing Utuh:</strong> Pelanggan wajib merekam video pembukaan paket secara utuh sejak resi masih menempel di paket, tanpa jeda (<em>no pause</em>) dan tanpa penyuntingan (<em>no edit</em>).</li>
+    <li><strong>Batas Waktu Pelaporan:</strong> Klaim kendala wajib dilaporkan dalam kurun waktu maksimal <strong>1×24 jam</strong> sejak paket dinyatakan sampai oleh sistem pelacakan ekspedisi.</li>
+    <li><strong>Kondisi Briket:</strong> Produk briket yang diretur harus dalam kondisi utuh seperti saat diterima dan belum dipakai melebihi 1-2 sampel uji coba.</li>
+    <li><strong>Lampiran Invoice:</strong> Sertakan Nomor Invoice resmi (contoh: <code>INV/YYYYMMDD/XXXX</code>) pada saat menghubungi layanan pelanggan kami.</li>
+</ul>
+
+<h2>3. Tahapan Pengajuan Pengembalian</h2>
+<ol>
+    <li><strong>Hubungi Admin Toko:</strong> Hubungi admin layanan pelanggan via WhatsApp atau kirim email ke <a href="mailto:info@sumatrabriks.com">info@sumatrabriks.com</a> dengan menyertakan Nomor Invoice dan rekaman video <em>unboxing</em>.</li>
+    <li><strong>Penilaian Tim Quality Control:</strong> Tim kami akan memverifikasi bukti yang Anda kirimkan dalam waktu maksimal 1×24 jam kerja.</li>
+    <li><strong>Persetujuan &amp; Solusi:</strong> Setelah klaim dinyatakan valid, admin akan memberikan opsi solusi terbaik (pengiriman produk pengganti atau pengembalian dana).</li>
+</ol>
+
+<h2>4. Opsi Penyelesaian (Replacement atau Refund)</h2>
+<p>Pelanggan berhak memilih solusi yang diinginkan:</p>
+<ul>
+    <li><strong>Penggantian Barang Baru (Replacement):</strong> Kami segera mengirimkan produk pengganti baru ke alamat Anda. Seluruh biaya ongkos kirim pengiriman barang pengganti ditanggung 100% oleh Sumatra Briks.</li>
+    <li><strong>Pengembalian Dana Penuh (Full Refund):</strong> Jika stok produk pengganti kosong atau Anda memilih pengembalian dana, dana pembelian akan ditransfer langsung ke rekening bank Anda dalam kurun waktu 1–2 hari kerja setelah verifikasi disetujui.</li>
+</ul>
+
+<h2>5. Biaya Ongkos Kirim Retur</h2>
+<ul>
+    <li>Jika pengembalian disebabkan oleh kelalaian toko (salah varian, cacat mutu) atau kerusakan dalam perjalanan ekspedisi, <strong>seluruh biaya ongkir pengembalian dan pengiriman ulang ditanggung sepenuhnya oleh Sumatra Briks</strong>.</li>
+    <li>Pengembalian barang karena pembatalan sepihak setelah barang dikirim atau salah memilih varian oleh pembeli tidak dapat kami terima.</li>
+</ul>
+
+<h2>6. Kontak Layanan Bantuan Retur</h2>
+<p>
+    Untuk konsultasi dan bantuan mengenai proses retur barang, silakan hubungi kami melalui:
+</p>
+<ul>
+    <li><strong>Email:</strong> <a href="mailto:info@sumatrabriks.com">info@sumatrabriks.com</a></li>
+    <li><strong>WhatsApp:</strong> Nomor admin toko resmi yang tertera pada konfirmasi pesanan Anda</li>
+    <li><strong>Alamat Operasional:</strong> AKRATAMA SADAWIRA GRUP — Medan, Sumatera Utara, Indonesia</li>
+</ul>
+HTML;
+
         $pages = [
             [
                 'title' => 'Kebijakan Privasi',
@@ -261,6 +319,20 @@ HTML;
                 'title' => 'Syarat & Ketentuan (Terms and Conditions)',
                 'slug' => 'term-and-condition',
                 'content' => $termsContent,
+                'created_at' => $now,
+                'updated_at' => $now,
+            ],
+            [
+                'title' => 'Kebijakan Pengembalian (Return Policy)',
+                'slug' => 'kebijakan-pengembalian',
+                'content' => $returnContent,
+                'created_at' => $now,
+                'updated_at' => $now,
+            ],
+            [
+                'title' => 'Kebijakan Pengembalian (Return Policy)',
+                'slug' => 'return-policy',
+                'content' => $returnContent,
                 'created_at' => $now,
                 'updated_at' => $now,
             ],

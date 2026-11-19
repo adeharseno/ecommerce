@@ -23,6 +23,10 @@ class PageController extends Controller
             'faq' => 'qna',
             'faqs' => 'qna',
             'tentang-kami' => 'about',
+            'return-policy' => 'kebijakan-pengembalian',
+            'refund-policy' => 'kebijakan-pengembalian',
+            'returns' => 'kebijakan-pengembalian',
+            'pengembalian' => 'kebijakan-pengembalian',
         ];
 
         $targetSlug = $aliases[$slug] ?? $slug;
