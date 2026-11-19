@@ -37,6 +37,12 @@
                     Produk
                 </a>
 
+                <a href="{{ Route::has('admin.orders.index') ? route('admin.orders.index') : '#' }}"
+                   class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all {{ request()->routeIs('admin.orders.*') ? 'bg-indigo-600 text-white' : 'text-slate-300 hover:bg-slate-800 hover:text-white' }}">
+                    <span class="text-lg">▤</span>
+                    Pesanan / Penjualan
+                </a>
+
                 <div class="pt-5 px-3 pb-2 text-[11px] font-semibold tracking-wider text-slate-400 uppercase">
                     Navigasi Cepat
                 </div>

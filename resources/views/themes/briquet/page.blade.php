@@ -1,6 +1,6 @@
 @extends('themes.briquet.layouts.app')
 
-@section('title', $page->title . ' — ' . config('app.name'))
+@section('title', $page->title . ' — ' . 'Sumatra Briks')
 
 @section('content')
 

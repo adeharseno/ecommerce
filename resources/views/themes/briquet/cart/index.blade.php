@@ -1,6 +1,6 @@
 @extends('themes.briquet.layouts.app')
 
-@section('title', 'Keranjang Belanja — ' . config('app.name'))
+@section('title', 'Keranjang Belanja — ' . 'Sumatra Briks')
 
 @section('content')
 

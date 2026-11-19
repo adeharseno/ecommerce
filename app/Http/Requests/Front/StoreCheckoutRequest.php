@@ -11,6 +11,24 @@ class StoreCheckoutRequest extends FormRequest
         return true;
     }
 
+    protected function prepareForValidation(): void
+    {
+        if ($this->has('customer_phone')) {
+            $phone = trim((string) $this->input('customer_phone'));
+            if (str_starts_with($phone, '0')) {
+                $phone = '+62'.substr($phone, 1);
+            } elseif (str_starts_with($phone, '8')) {
+                $phone = '+62'.$phone;
+            } elseif (str_starts_with($phone, '62') && ! str_starts_with($phone, '+62')) {
+                $phone = '+'.$phone;
+            }
+
+            $this->merge([
+                'customer_phone' => $phone,
+            ]);
+        }
+    }
+
     /** @return array<string, list<string>> */
     public function rules(): array
     {

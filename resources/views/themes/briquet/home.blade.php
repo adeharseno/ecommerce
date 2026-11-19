@@ -1,112 +1,23 @@
 @extends('themes.briquet.layouts.app')
-
-@section('title', config('app.name') . ' — Home')
-
+@section('title', 'Sumatra Briks — Premium Indonesian Coconut Charcoal Briquettes')
 @section('content')
-
-    {{-- ── Hero ── --}}
-    <section class="relative bg-stone-100 overflow-hidden">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 md:py-32">
-            <div class="max-w-2xl">
-                <p class="text-xs font-semibold tracking-[0.25em] uppercase text-stone-500 mb-4">Koleksi Terbaru</p>
-                <h1 class="text-4xl md:text-6xl font-bold leading-tight text-stone-900">
-                    Temukan Produk <br>
-                    <span class="text-stone-500">Pilihan Anda</span>
-                </h1>
-                <p class="mt-6 text-lg text-stone-600 leading-relaxed">
-                    Kualitas terbaik, harga terjangkau. Belanja dengan mudah dan aman.
-                </p>
-                <div class="mt-8 flex flex-wrap gap-4">
-                    <a href="{{ route('products.index') }}"
-                       class="inline-flex items-center gap-2 px-6 py-3 bg-stone-900 text-white text-sm font-semibold rounded-full hover:bg-stone-700 transition-colors">
-                        Lihat Produk
-                        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"/>
-                        </svg>
-                    </a>
-                    <a href="{{ route('page.show', 'about') }}"
-                       class="inline-flex items-center gap-2 px-6 py-3 border border-stone-300 text-stone-700 text-sm font-semibold rounded-full hover:bg-stone-100 transition-colors">
-                        Tentang Kami
-                    </a>
-                </div>
-            </div>
-        </div>
-        <div class="absolute inset-y-0 right-0 w-1/3 bg-gradient-to-l from-stone-200 to-transparent hidden lg:block"></div>
-    </section>
-
-    {{-- ── Featured Products ── --}}
-    <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <div class="flex items-end justify-between mb-10">
-            <div>
-                <p class="text-xs font-semibold tracking-[0.2em] uppercase text-stone-400 mb-1">Unggulan</p>
-                <h2 class="text-2xl md:text-3xl font-bold text-stone-900">Produk Terbaru</h2>
-            </div>
-            <a href="{{ route('products.index') }}"
-               class="text-sm font-medium text-stone-600 hover:text-stone-900 transition-colors underline underline-offset-4">
-                Lihat semua
-            </a>
-        </div>
-
-        @if ($products->isEmpty())
-            <div class="text-center py-20 text-stone-400">
-                <p class="text-lg">Belum ada produk tersedia.</p>
-            </div>
-        @else
-            <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-5">
-                @foreach ($products as $product)
-                    <a href="{{ route('products.show', $product->slug) }}" class="group block">
-                        <div class="aspect-square overflow-hidden rounded-xl bg-stone-100 mb-3">
-                            <img src="{{ $product->getFirstImageUrl() }}"
-                                 alt="{{ $product->name }}"
-                                 class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
-                        </div>
-                        <div class="space-y-1">
-                            @if ($product->category)
-                                <p class="text-[11px] font-medium uppercase tracking-widest text-stone-400">
-                                    {{ $product->category }}
-                                </p>
-                            @endif
-                            <h3 class="text-sm font-semibold text-stone-800 group-hover:text-stone-600 transition-colors line-clamp-2">
-                                {{ $product->name }}
-                            </h3>
-                            <p class="text-sm font-bold text-stone-900">
-                                Rp {{ number_format((float) $product->price, 0, ',', '.') }}
-                            </p>
-                        </div>
-                    </a>
-                @endforeach
-            </div>
-        @endif
-    </section>
-
-    {{-- ── Features strip ── --}}
-    <section class="bg-stone-900 text-white py-12">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid grid-cols-1 sm:grid-cols-3 gap-8 text-center">
-                <div class="flex flex-col items-center gap-2">
-                    <svg class="w-8 h-8 text-stone-400" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 18.75a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m3 0h6m-9 0H3.375a1.125 1.125 0 0 1-1.125-1.125V14.25m17.25 4.5a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m3 0h1.125c.621 0 1.129-.504 1.09-1.124a17.902 17.902 0 0 0-3.213-9.193 2.056 2.056 0 0 0-1.58-.86H14.25M16.5 18.75h-2.25m0-11.177v-.958c0-.568-.422-1.048-.987-1.106a48.554 48.554 0 0 0-10.026 0 1.106 1.106 0 0 0-.987 1.106v7.635m12-6.677v6.677m0 4.5v-4.5m0 0h-12"/>
-                    </svg>
-                    <h4 class="font-semibold">Pengiriman Cepat</h4>
-                    <p class="text-stone-400 text-sm">2-5 hari kerja ke seluruh Indonesia</p>
-                </div>
-                <div class="flex flex-col items-center gap-2">
-                    <svg class="w-8 h-8 text-stone-400" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75m-3-7.036A11.959 11.959 0 0 1 3.598 6 11.99 11.99 0 0 0 3 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285Z"/>
-                    </svg>
-                    <h4 class="font-semibold">Pembayaran Aman</h4>
-                    <p class="text-stone-400 text-sm">Transaksi terjamin & terpercaya</p>
-                </div>
-                <div class="flex flex-col items-center gap-2">
-                    <svg class="w-8 h-8 text-stone-400" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99"/>
-                    </svg>
-                    <h4 class="font-semibold">Garansi Pengembalian</h4>
-                    <p class="text-stone-400 text-sm">Pengembalian mudah dalam 7 hari</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
+<section class="hero" id="top">
+    <div class="hero-art" role="img" aria-label="Sumatra Briks premium coconut charcoal briquettes and packaging"></div>
+    <div class="site-container hero-inner">
+        <div class="hero-copy"><span class="eyebrow"><span class="mini-line"></span> FROM SUMATRA, INDONESIA</span><h1>Nature's fuel.<br><em>Perfected.</em></h1><p>Premium coconut shell charcoal briquettes crafted for remarkable heat, dependable quality, and the world's finest experiences.</p><div class="hero-ctas"><a class="button button-dark" href="{{ route('products.index') }}">Explore our collection <span>↗</span></a><a class="text-link" href="#why-us">Discover our story <span>↗</span></a></div><div class="hero-meta"><span><b>100%</b> COCONUT SHELL*</span><span class="hero-meta-line"></span><span><b>06</b> PRODUCT FORMATS</span><span class="hero-meta-line"></span><span><b>ID</b> ORIGIN</span></div></div>
+    </div>
+    <div class="hero-vertical">PREMIUM CHARCOAL · MADE IN INDONESIA</div>
+</section>
+<div class="trust-strip"><div class="site-container trust-inner"><span>FROM NATURE TO YOUR MARKET</span><span><i>✳</i> COCONUT SHELL BASED</span><span><i>◇</i> CUSTOM PACKAGING</span><span><i>↗</i> EXPORT-FOCUSED SUPPLY</span></div></div>
+<section class="section collection" id="collection"><div class="site-container"><div class="section-heading"><div><div class="eyebrow">01 / THE COLLECTION</div><h2>Find your <em>perfect burn.</em></h2><p>Browse our charcoal collection, select your preferred format, and shop securely with bank transfer.</p></div><a class="text-link" href="{{ route('products.index') }}">View all products <span>↗</span></a></div><div class="product-grid">
+@forelse($products as $product)
+    @include('themes.briquet.partials.store-product-card', ['product' => $product])
+@empty
+    <div class="store-empty-state"><h3>Our collection is coming soon.</h3><p>Products will appear here after they are added to the store catalog.</p><a href="{{ route('products.index') }}" class="button button-dark">Browse products ↗</a></div>
+@endforelse
+</div><p class="demo-disclaimer">*Product imagery may use design concepts. Prices and availability are managed through the shop catalog.</p></div></section>
+<section class="story-panel" id="why-us"><div class="story-visual"><div class="story-stamp"><span>CRAFTED IN</span><b>SUMATRA</b><span>INDONESIA</span></div></div><div class="story-content"><div class="eyebrow light">02 / WHY SUMATRA BRIKS</div><h2>Rooted in nature.<br><em>Made for more.</em></h2><p>Great charcoal starts long before the flame. We focus on carefully selected coconut shell materials, thoughtful production, and a product experience that helps our partners feel confident in every shipment.</p><div class="story-features"><div><span class="story-icon">✳</span><div><h3>Natural by origin</h3><p>Giving coconut shells a second purpose through value-added charcoal production.</p></div></div><div><span class="story-icon">◎</span><div><h3>Consistency in mind</h3><p>Products designed around uniform shapes and buyer-specific requirements.</p></div></div><div><span class="story-icon">▣</span><div><h3>Your brand, your box</h3><p>Custom packaging concepts available for private-label and wholesale partnerships.</p></div></div></div><a class="text-link on-dark" href="#process">Explore our process <span>↗</span></a></div></section>
+<section class="section process-section" id="process"><div class="site-container"><div class="section-heading"><div><div class="eyebrow">03 / OUR PROCESS</div><h2>From coconut shell<br>to <em>lasting heat.</em></h2></div><p class="heading-side">A considered journey from natural raw material to neatly packed briquettes, designed for buyers who value quality and transparency.</p></div><div class="process-grid"><div><span>01</span><div class="process-symbol">◉</div><h3>Source</h3><p>Selected coconut shell materials from Indonesian supply networks.</p></div><div><span>02</span><div class="process-symbol">♨</div><h3>Carbonize</h3><p>Raw shells are turned into charcoal as the foundation for briquettes.</p></div><div><span>03</span><div class="process-symbol">⬡</div><h3>Shape</h3><p>Charcoal is processed and formed into the required product profile.</p></div><div><span>04</span><div class="process-symbol">▧</div><h3>Pack & supply</h3><p>Products are sorted, packed and prepared for the buyer's destination.</p></div></div></div></section>
+<section class="quality-band"><div class="site-container quality-inner"><div><div class="eyebrow light">04 / QUALITY FIRST</div><h2>Details that<br><em>make the difference.</em></h2></div><div><p>From the shape of each briquette to the finish of each carton, our approach is designed around your product needs. Ask our team for the latest verified product data and packing options.</p><a class="button button-outline" href="{{ route('products.index') }}">Shop the collection ↗</a></div></div></section>
+<section class="section partnership" id="contact"><div class="site-container partnership-inner"><div><div class="eyebrow">05 / START SHOPPING</div><h2>Your next order<br><em>starts here.</em></h2><p>Looking for a reliable charcoal supply partner? Choose your favorite charcoal, add it to your cart, and complete checkout using manual bank transfer.</p><div class="contact-fields"><div><span>PRODUCT FORMATS</span><b>Cube · Hexa · Pillow</b></div><div><span>YOUR BRAND</span><b>Private-label packaging</b></div><div><span>LOCATION</span><b>Medan, Indonesia</b></div></div><a class="button button-dark" href="{{ route('products.index') }}">Shop all products <span>↗</span></a></div><div class="partnership-visual"><img loading="lazy" src="{{ asset('images/sumatra/hero-charcoal.png') }}" alt="Concept Sumatra Briks charcoal packaging"><span>MADE IN SUMATRA / READY FOR THE WORLD</span></div></div></section>
 @endsection
-

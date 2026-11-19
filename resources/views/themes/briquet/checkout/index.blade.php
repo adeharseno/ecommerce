@@ -1,6 +1,6 @@
 @extends('themes.briquet.layouts.app')
 
-@section('title', 'Checkout — ' . config('app.name'))
+@section('title', 'Checkout — ' . 'Sumatra Briks')
 
 @section('content')
 
@@ -9,7 +9,7 @@
     {{-- ── Page header ── --}}
     <div class="mb-8">
         <h1 class="text-3xl font-bold text-stone-900">Checkout</h1>
-        <p class="text-sm text-stone-400 mt-1">Lengkapi data pengiriman Anda untuk melanjutkan.</p>
+        <p class="text-sm text-stone-400 mt-1">Lengkapi data pengiriman Anda untuk melanjutkan pembuatan pesanan.</p>
     </div>
 
     {{-- ── Progress indicator ── --}}
@@ -30,11 +30,27 @@
         </span>
     </div>
 
+    @if (session('error'))
+        <div class="mb-6 p-4 bg-red-50 border border-red-200 rounded-2xl flex items-start gap-3 text-sm text-red-800">
+            <svg class="w-5 h-5 text-red-500 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+            </svg>
+            <div>
+                <p class="font-semibold">Gagal Memproses Pesanan</p>
+                <p class="mt-0.5 text-red-700">{{ session('error') }}</p>
+            </div>
+        </div>
+    @endif
+
     <div class="grid grid-cols-1 lg:grid-cols-5 gap-10 items-start">
 
         {{-- ── Customer form ── --}}
         <div class="lg:col-span-3">
-            <form method="POST" action="{{ route('checkout.store') }}" class="space-y-5">
+            <form method="POST"
+                  action="{{ route('checkout.store') }}"
+                  class="space-y-5"
+                  id="checkout-form"
+                  onsubmit="return handleCheckoutSubmit(this);">
                 @csrf
 
                 <div class="bg-white rounded-2xl border border-stone-100 shadow-sm p-6 space-y-5">
@@ -52,6 +68,7 @@
                                value="{{ old('customer_name') }}"
                                placeholder="Masukkan nama lengkap"
                                autocomplete="name"
+                               required
                                class="w-full px-4 py-2.5 border rounded-xl text-sm
                                       focus:outline-none focus:ring-2 focus:ring-stone-400 transition
                                       {{ $errors->has('customer_name') ? 'border-red-400 bg-red-50' : 'border-stone-300' }}">
@@ -81,6 +98,7 @@
                                    value="{{ old('customer_phone') }}"
                                    placeholder="81xxxxxxxxxx"
                                    autocomplete="tel"
+                                   required
                                    class="w-full pl-12 pr-4 py-2.5 border rounded-xl text-sm
                                           focus:outline-none focus:ring-2 focus:ring-stone-400 transition
                                           {{ $errors->has('customer_phone') ? 'border-red-400 bg-red-50' : 'border-stone-300' }}">
@@ -106,6 +124,7 @@
                                   rows="4"
                                   placeholder="Jl. Nama Jalan No. XX, RT/RW, Kelurahan, Kecamatan, Kota, Provinsi, Kode Pos"
                                   autocomplete="street-address"
+                                  required
                                   class="w-full px-4 py-2.5 border rounded-xl text-sm resize-none
                                          focus:outline-none focus:ring-2 focus:ring-stone-400 transition
                                          {{ $errors->has('shipping_address') ? 'border-red-400 bg-red-50' : 'border-stone-300' }}">{{ old('shipping_address') }}</textarea>
@@ -120,28 +139,38 @@
                     </div>
                 </div>
 
-                {{-- ── Payment info (static for now) ── --}}
-                <div class="bg-amber-50 border border-amber-200 rounded-2xl p-5">
+                {{-- ── Payment info ── --}}
+                <div class="bg-blue-50/70 border border-blue-200 rounded-2xl p-5">
                     <div class="flex items-start gap-3">
-                        <svg class="w-5 h-5 text-amber-500 shrink-0 mt-0.5" fill="none"
+                        <svg class="w-5 h-5 text-blue-600 shrink-0 mt-0.5" fill="none"
                              viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round"
-                                  d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126ZM12 15.75h.007v.008H12v-.008Z"/>
+                                  d="M2.25 8.25h19.5M2.25 9h19.5m-16.5 5.25h6m-6 2.25h3m-3.75 3h15a2.25 2.25 0 0 0 2.25-2.25V6.75A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25v10.5A2.25 2.25 0 0 0 4.5 19.5Z"/>
                         </svg>
                         <div>
-                            <p class="text-sm font-semibold text-amber-800">Metode Pembayaran: Transfer Bank</p>
-                            <p class="text-xs text-amber-700 mt-1 leading-relaxed">
-                                Setelah pesanan dibuat, detail rekening tujuan akan ditampilkan.
-                                Selesaikan pembayaran dalam <strong>24 jam</strong> agar pesanan tidak dibatalkan.
+                            <p class="text-sm font-semibold text-blue-900">
+                                Metode Pembayaran: Transfer Bank {{ $bank['name'] ?? 'BRI' }}
+                            </p>
+                            <p class="text-xs text-blue-800 mt-1 leading-relaxed">
+                                Rekening resmi atas nama <strong>{{ $bank['account_holder'] ?? 'AKRATAMA SADAWIRA GRUP' }}</strong>.
+                                Setelah klik "Buat Pesanan", nomor rekening dan instruksi transfer lengkap akan langsung ditampilkan pada halaman konfirmasi.
                             </p>
                         </div>
                     </div>
                 </div>
 
                 <button type="submit"
+                        id="submit-order-button"
                         class="w-full py-4 bg-stone-900 text-white font-semibold rounded-full
-                               hover:bg-stone-700 transition-colors text-sm tracking-wide">
-                    Buat Pesanan →
+                               hover:bg-stone-700 transition-colors text-sm tracking-wide flex items-center justify-center gap-2 cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed">
+                    <span id="submit-text">Buat Pesanan →</span>
+                    <span id="submit-loading" class="hidden items-center gap-2">
+                        <svg class="animate-spin h-4 w-4 text-white" fill="none" viewBox="0 0 24 24">
+                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
+                        </svg>
+                        Memproses Pesanan...
+                    </span>
                 </button>
             </form>
         </div>
@@ -172,24 +201,62 @@
                     @endforeach
                 </div>
 
-                <div class="border-t border-stone-100 mt-5 pt-5 space-y-2">
+                <div class="border-t border-stone-100 mt-5 pt-5 space-y-2.5">
                     <div class="flex justify-between text-sm text-stone-500">
-                        <span>Subtotal</span>
+                        <span>Subtotal Produk</span>
                         <span>Rp {{ number_format($total, 0, ',', '.') }}</span>
                     </div>
-                    <div class="flex justify-between text-sm text-stone-500">
+                    <div class="flex justify-between items-center text-sm text-stone-500">
                         <span>Ongkos Kirim</span>
-                        <span class="text-stone-400 italic">Ditentukan kemudian</span>
+                        <span class="text-xs text-amber-700 bg-amber-50 px-2 py-0.5 rounded border border-amber-200 font-medium">
+                            Dikonfirmasi Admin
+                        </span>
                     </div>
                     <div class="flex justify-between font-bold text-stone-900 text-base pt-2 border-t border-stone-100">
-                        <span>Total</span>
+                        <span>Total Pembayaran</span>
                         <span>Rp {{ number_format($total, 0, ',', '.') }}</span>
                     </div>
+                </div>
+
+                <div class="mt-4 p-3 bg-stone-50 rounded-xl border border-stone-100 text-xs text-stone-500 leading-relaxed">
+                    <p class="flex items-start gap-1.5">
+                        <svg class="w-4 h-4 text-stone-400 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        <span>
+                            Total di atas belum termasuk ongkos kirim. Admin toko akan menghubungi nomor WhatsApp Anda untuk konfirmasi tarif & kurir pengiriman.
+                        </span>
+                    </p>
                 </div>
             </div>
         </div>
 
     </div>
 </div>
+
+<script>
+    let formSubmitted = false;
+    function handleCheckoutSubmit(form) {
+        if (formSubmitted) {
+            return false;
+        }
+        formSubmitted = true;
+        const btn = document.getElementById('submit-order-button');
+        const text = document.getElementById('submit-text');
+        const loading = document.getElementById('submit-loading');
+
+        if (btn) {
+            btn.disabled = true;
+        }
+        if (text) {
+            text.classList.add('hidden');
+        }
+        if (loading) {
+            loading.classList.remove('hidden');
+            loading.classList.add('flex');
+        }
+        return true;
+    }
+</script>
 
 @endsection

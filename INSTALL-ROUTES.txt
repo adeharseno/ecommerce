@@ -1,0 +1,10 @@
+
+// BEGIN SUMATRA ADMIN ORDERS — merge into routes/web.php (not a replacement).
+// Authentication plus explicit email allowlist; denies access when not configured.
+Route::prefix('admin')->name('admin.')->middleware(['auth', \App\Http\Middleware\EnsureSumatraOrderAdmin::class])->group(function () {
+    Route::get('/orders', [\App\Http\Controllers\Admin\OrderCmsController::class, 'index'])->name('orders.index');
+    Route::get('/orders/{invoice}', [\App\Http\Controllers\Admin\OrderCmsController::class, 'show'])->name('orders.show');
+    Route::patch('/orders/{invoice}/status', [\App\Http\Controllers\Admin\OrderCmsController::class, 'updateStatus'])->name('orders.status');
+    Route::get('/orders/{invoice}/proof', [\App\Http\Controllers\Admin\OrderCmsController::class, 'proof'])->name('orders.proof');
+});
+// END SUMATRA ADMIN ORDERS

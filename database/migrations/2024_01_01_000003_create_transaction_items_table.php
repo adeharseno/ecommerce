@@ -11,12 +11,12 @@ return new class extends Migration
         Schema::create('transaction_items', function (Blueprint $table) {
             $table->id();
             $table->foreignId('transaction_id')
-                  ->constrained('transactions')
-                  ->cascadeOnDelete();
+                ->constrained('transactions')
+                ->cascadeOnDelete();
             $table->foreignId('product_id')
-                  ->nullable()
-                  ->constrained('products')
-                  ->nullOnDelete();
+                ->nullable()
+                ->constrained('products')
+                ->nullOnDelete();
             $table->string('product_name');
             $table->decimal('price', 15, 2);
             $table->unsignedInteger('quantity');
@@ -29,4 +29,3 @@ return new class extends Migration
         Schema::dropIfExists('transaction_items');
     }
 };
-

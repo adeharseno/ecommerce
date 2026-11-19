@@ -1,58 +1,44 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Sumatra Briks — Ecommerce + CMS Orders + Demo Products
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+**Patch for existing Laravel application, not a full Laravel project.** Built from the supplied `resources.zip` (Blade/routes/storage only) and the previous storefront/CMS patches. Application controllers, Eloquent models, migrations, database credentials, and actual table schema were NOT supplied. Not end-to-end tested.
 
-## About Laravel
+## Included
+- Premium ecommerce storefront using DATABASE products and existing cart/checkout routes
+- Six local concept product images and hero asset
+- CMS order list, detail, status changes, receipt/proof access controller and admin sidebar link (requires integration)
+- `database/seeders/SumatraDemoProductsSeeder.php`: six *fake* products, sample IDR prices, qty 100, copied product images. **No dummy orders or payment accounts**.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## Installation (LOCAL DEVELOPMENT ONLY)
+1. Back up files & database; make a new Git branch.
+2. Unzip into Laravel project root, merging `app/`, `config/`, `database/`, `public/`, `resources/`. Do not replace `.env` or existing `routes/web.php`.
+3. For CMS orders, append content from `INSTALL-ROUTES.txt` to existing `routes/web.php` **once**. If you already installed CMS Orders patch, do NOT append the routes again.
+4. Confirm current table columns in `products` match `name`, `slug`, `price`, `stock`; the seeder accommodates missing optional `category`, `description`, `is_active`, `sku`, `images` columns but cannot infer other mandatory fields or image relations. If schema differs, adapt the seeder first.
+5. On LOCAL (`APP_ENV=local`) run:
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
-
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
-
-## Learning Laravel
-
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
-
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
-
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
-
-## Agentic Development
-
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
-
-```bash
-composer require laravel/boost --dev
-
-php artisan boost:install
+```
+php artisan optimize:clear
+php artisan db:seed --class=SumatraDemoProductsSeeder
+php artisan storage:link
+npm run build
+php artisan serve
 ```
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
+6. Check `/admin/products`, `/products`, `/`, `/cart`, `/checkout` and a test checkout. Run seeder repeatedly safely: existing products are SKIPPED (not overwritten).
+7. Price examples: C25 35,000; C26 37,000; C27 39,000; C28 41,000; Hexa 45,000; Pillow 43,000 IDR; stock 100 each. These figures are **not approved product prices** and must NOT be used in production.
+8. For order CMS, confirm correct model, order table columns, relation `items`, payment proof disk, auth and status flow against the actual app. Refer to original CMS orders patch instructions. These are not guaranteed compatible without the missing backend code.
 
-## Contributing
+## Safety
+- Seeder explicitly BLOCKS production/staging and never deletes or updates existing products.
+- Don't run `migrate:fresh` or any database reset.
+- Configure real bank settings only when owner confirms values: `SUMATRA_BANK_NAME`, `SUMATRA_BANK_ACCOUNT`, `SUMATRA_BANK_HOLDER`.
+- Admin order access requires auth + explicit admin allowlist; original admin products routes in uploaded source did not have auth protection; resolve before going live.
+- The original routes only establish the existence of checkout endpoints; payment/stock workflow and proof privacy must be verified.
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
-
-## Code of Conduct
-
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+## CMS orders config examples
+```
+SUMATRA_ORDER_ADMIN_EMAILS="actual-admin@example.com"
+SUMATRA_ORDER_MODEL="App\Models\Transaction"
+SUMATRA_ORDER_PROOF_COLUMN="payment_proof"
+SUMATRA_ORDER_PROOF_DISK="public"
+```
+Those are **examples, not guaranteed model/column names**.

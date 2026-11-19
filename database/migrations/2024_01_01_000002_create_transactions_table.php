@@ -16,7 +16,7 @@ return new class extends Migration
             $table->text('shipping_address');
             $table->decimal('total_amount', 15, 2);
             $table->enum('status', ['pending', 'paid', 'processing', 'completed', 'cancelled'])
-                  ->default('pending');
+                ->default('pending');
             $table->string('bank_name')->nullable();
             $table->string('account_holder')->nullable();
             $table->string('payment_proof')->nullable();
@@ -29,4 +29,3 @@ return new class extends Migration
         Schema::dropIfExists('transactions');
     }
 };
-

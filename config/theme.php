@@ -14,4 +14,3 @@ return [
     'active' => env('APP_THEME', 'briquet'),
 
 ];
-

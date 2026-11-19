@@ -1,6 +1,6 @@
 @extends('themes.briquet.layouts.app')
 
-@section('title', $product->name . ' — ' . config('app.name'))
+@section('title', $product->name . ' — ' . 'Sumatra Briks')
 
 @section('content')
 
@@ -32,10 +32,13 @@
                 @if (count($images) > 1)
                     <div class="flex gap-2 overflow-x-auto pb-1">
                         @foreach ($images as $img)
+                            @php
+                                $thumbUrl = asset('storage/' . $img) . ($product->updated_at ? '?v=' . $product->updated_at->timestamp : '');
+                            @endphp
                             <button type="button"
-                                    onclick="document.getElementById('main-image').src='{{ asset('storage/' . $img) }}'"
+                                    onclick="document.getElementById('main-image').src='{{ $thumbUrl }}'"
                                     class="shrink-0 w-16 h-16 rounded-lg overflow-hidden border-2 border-transparent hover:border-stone-400 transition-colors focus:outline-none focus:border-stone-600">
-                                <img src="{{ asset('storage/' . $img) }}"
+                                <img src="{{ $thumbUrl }}"
                                      alt="{{ $product->name }}"
                                      class="w-full h-full object-cover">
                             </button>
