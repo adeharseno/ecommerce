@@ -13,7 +13,23 @@ class PageController extends Controller
 
     public function show(string $slug): View
     {
-        $page = Page::where('slug', $slug)->firstOrFail();
+        $aliases = [
+            'term-and-condition' => 'syarat-ketentuan',
+            'terms-and-conditions' => 'syarat-ketentuan',
+            'terms-conditions' => 'syarat-ketentuan',
+            'terms' => 'syarat-ketentuan',
+            'privacy-policy' => 'kebijakan-privasi',
+            'privacy' => 'kebijakan-privasi',
+            'faq' => 'qna',
+            'faqs' => 'qna',
+            'tentang-kami' => 'about',
+        ];
+
+        $targetSlug = $aliases[$slug] ?? $slug;
+
+        $page = Page::where('slug', $slug)
+            ->orWhere('slug', $targetSlug)
+            ->firstOrFail();
 
         return view($this->theme->view('page'), compact('page'));
     }
